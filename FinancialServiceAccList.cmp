@@ -1,0 +1,39 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="FinancialServiceAccListCntrl" >
+	<aura:attribute name="data" type="Object"/>
+    <aura:attribute name="filteredData" type="Map"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="errors" type="Object" default="[]"/>
+    <aura:attribute name="draftValues" type="Object" default="[]"/>
+    <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/>
+    <aura:attribute name="isLoading" type="Boolean" default="true" />
+    <aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <div class="slds-p-around_medium">
+        <h1 class="slds-text-heading_large">Financial Services Account Listing</h1>
+    </div>
+    <br/>
+    <span>
+        	<lightning:input onchange="{!c.searchTable}" type="search" label="Searh" variant="label-hidden" placeholder="Enter search term" aura:id="SearchBox"/>
+        </span>
+    	<br/>
+    <!-- the container element determine the height of the datatable -->
+    <div style="height: 300px">
+        <lightning:datatable aura:id="dtTable"
+                             columns="{! v.columns }"
+                             data="{! v.filteredData }"
+                             keyField="Id"
+                             errors="{! v.errors }"
+                             draftValues="{! v.draftValues }"
+                             onsave="{! c.handleSaveEdition }"
+                             sortedBy="{!v.sortBy}"
+                         	 sortedDirection="{!v.sortDirection}"
+                         	 onsort="{!c.handleSort}"
+                             />
+    </div>
+</aura:component>
